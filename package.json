@@ -1,0 +1,29 @@
+{
+  "name": "react-native-swift-base",
+  "version": "1.0.0",
+  "description": "Changes AppDelegate to Swift for React-Native apps",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rhdeck/react-native-swift-base.git"
+  },
+  "author": "Ray Deck",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rhdeck/react-native-swift-base/issues"
+  },
+  "homepage": "https://github.com/rhdeck/react-native-swift-base#readme",
+  "dependencies": {
+    "glob": "^7.1.2",
+    "xcode": "apache/cordova-node-xcode"
+  },
+  "rnpm": {
+    "commands": {
+      "prelink":
+        "node node_modules/react-native-swift-base/bin/set-swift-base.js"
+    }
+  }
+}
