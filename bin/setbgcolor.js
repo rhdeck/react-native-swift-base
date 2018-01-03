@@ -34,7 +34,11 @@ module.exports = [
             "What color do you want for your default background? (as Hex value)",
           default: defColor,
           validate: answer => {
-            return hexrgb(answer);
+            try {
+              return hexrgb(answer) ? true : false;
+            } catch (e) {
+              return false;
+            }
           }
         })
         .then(answers => {
