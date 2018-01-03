@@ -9,7 +9,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     guard let rv:RCTRootView = RCTRootView(bundleURL: jsLocation, moduleName: Bundle.main.infoDictionary![kCFBundleNameKey as String] as! String, initialProperties: nil, launchOptions: launchOptions) else {
       return false
     }
-    rv.backgroundColor = UIColor.white;
+    if let bgdict = Bundle.main.infoDictionary!["backgroundColor"] as? [String:Any] {
+      let r = bgdict["red"] as? Float ?? 1.0
+      let g = bgdict["green"] as? Float ?? 1.0
+      let b = bgdict["blue"] as? Float ?? 1.0
+      let a = bgdict["alpha"] as? Float ?? 1.0
+      let c = UIColor(red: CGFloat(r), green: CGFloat(g), blue: CGFloat(b), alpha: CGFloat(a))
+      rv.backgroundColor = c
+    } else {
+      rv.backgroundColor = UIColor.white
+    }
     let w = UIWindow(frame: UIScreen.main.bounds)
     let rvc = UIViewController()
     rvc.view = rv

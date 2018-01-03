@@ -88,3 +88,4 @@ proj.parse(function(err) {
   const out = proj.writeSync();
   fs.writeFileSync(filename, out);
 });
+require("../lib/setplistcolor")();

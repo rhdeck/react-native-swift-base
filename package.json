@@ -18,11 +18,16 @@
   "homepage": "https://github.com/rhdeck/react-native-swift-base#readme",
   "dependencies": {
     "glob": "^7.1.2",
+    "hex-rgb": "^2.0.0",
+    "inquirer": "^4.0.2",
+    "plist": "^2.1.0",
+    "rgb-hex": "^2.1.0",
     "xcode": "apache/cordova-node-xcode"
   },
   "rnpm": {
     "commands": {
       "prelink": "node node_modules/react-native-swift-base/bin/set-swift-base.js"
-    }
+    },
+    "plugin": "./bin/setbgcolor.js"
   }
 }
