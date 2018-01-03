@@ -10,7 +10,7 @@ module.exports = [
     name: "bgcolor [newcolor]",
     description: "Set background color for application",
     func: newcolor => {
-      if (typeof newcolor !== "string") {
+      if (newcolor && typeof newcolor !== "string") {
         newcolor = newcolor[0];
       }
       const pp = path.join(process.cwd(), "package.json");
