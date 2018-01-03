@@ -43,7 +43,7 @@ const bridgingHeaderTargetPath = path.join(iosPath, bridgingHeaderName);
 //Reason check - are they already here?
 if (fs.existsSync(appDelegateTargetPath)) {
   console.log(appDelegateName + " is already in " + iosPath + ": aborting");
-  process.exit(1);
+  process.exit();
 }
 
 const templatesPath = path.join(modulePath, "templates");
