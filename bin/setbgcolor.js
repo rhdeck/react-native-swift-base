@@ -15,7 +15,7 @@ module.exports = [
       }
       const pp = path.join(process.cwd(), "package.json");
       const p = require(pp);
-      if (typeof newcolor !== undefined) {
+      if (typeof newcolor !== "undefined") {
         p.backgroundColor = newcolor;
         fs.writeFileSync(pp, JSON.stringify(p, null, 2));
         require("../lib/setPListColor")();
