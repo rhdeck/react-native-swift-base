@@ -2,7 +2,6 @@
   "name": "react-native-swift-base",
   "version": "1.4.0",
   "description": "Changes AppDelegate to Swift for React-Native apps",
-  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -22,11 +21,12 @@
     "inquirer": "^4.0.2",
     "plist": "^2.1.0",
     "rgb-hex": "^2.1.0",
-    "xcode": "apache/cordova-node-xcode"
+    "xcode": "rhdeck/cordova-node-xcode"
   },
   "rnpm": {
     "commands": {
-      "prelink": "node node_modules/react-native-swift-base/bin/set-swift-base.js"
+      "prelink":
+        "node node_modules/react-native-swift-base/bin/set-swift-base.js"
     },
     "plugin": "./bin/setbgcolor.js"
   }
