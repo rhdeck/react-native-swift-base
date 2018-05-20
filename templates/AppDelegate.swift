@@ -3,65 +3,69 @@ import RNSRegistry
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
+  var cachedLaunchOptions: [UIApplicationLaunchOptionsKey: Any]? = nil
+  public func getRootView(_ jsLocation: URL) -> UIView? {
+    guard let rv:RCTRootView = RCTRootView(bundleURL: jsLocation, moduleName: Bundle.main.infoDictionary![kCFBundleNameKey as String] as! String, initialProperties: nil, launchOptions: cachedLaunchOptions) else {
+      return nil
+    }
+    return rv
+  }
   public func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    cachedLaunchOptions = launchOptions
     guard let jsLocation = RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index", fallbackResource: nil) else {
       return false;
     }
-    RNSMainRegistry.main.data["initialBundle"] = jsLocation
-    guard let rv:RCTRootView = RCTRootView(bundleURL: jsLocation, moduleName: Bundle.main.infoDictionary![kCFBundleNameKey as String] as! String, initialProperties: nil, launchOptions: launchOptions) else {
-      return false
-    }
-    if let bgdict = Bundle.main.infoDictionary!["backgroundColor"] as? [String:Any] {
-      let r = bgdict["red"] as? Float ?? 1.0
-      let g = bgdict["green"] as? Float ?? 1.0
-      let b = bgdict["blue"] as? Float ?? 1.0
-      let a = bgdict["alpha"] as? Float ?? 1.0
-      let c = UIColor(red: CGFloat(r), green: CGFloat(g), blue: CGFloat(b), alpha: CGFloat(a))
-      rv.backgroundColor = c
-    } else {
-      rv.backgroundColor = UIColor.white
-    }
+    RNSMainRegistry.setData(key: "initialBundle", value: jsLocation.absoluteString)
     let w = UIWindow(frame: UIScreen.main.bounds)
     let rvc = UIViewController()
-    rvc.view = rv
+    rvc.view = getRootView(jsLocation)
     w.rootViewController = rvc
     w.makeKeyAndVisible()
     self.window = w
-    let _ = RNSMainRegistry.main.triggerEvent("app.didFinishLaunchingWithOptions", data: launchOptions ?? [:])
+    let _ = RNSMainRegistry.addEvent(type: "app.reset", key: "core") { data in
+        DispatchQueue.main.async {
+          let rvc = UIViewController()
+          guard let sURL = RNSMainRegistry.getData(key: "initialBundle") as? String, let jsLocation = URL(string: sURL)
+          else { return }
+          rvc.view = self.getRootView(jsLocation)
+          self.window?.rootViewController = rvc
+        }
+        return true
+    }
+    let _ = RNSMainRegistry.triggerEvent(type: "app.didFinishLaunchingWithOptions", data: launchOptions ?? [:])
     return true
   }
   func applicationWillResignActive(_ application: UIApplication) {
-    let _ = RNSMainRegistry.main.triggerEvent("app.willresignactive", data: [:])
+    let _ = RNSMainRegistry.triggerEvent(type: "app.willresignactive", data: [:])
   }
   
   func applicationDidEnterBackground(_ application: UIApplication) {
-    let _ = RNSMainRegistry.main.triggerEvent("app.didenterbackground", data: [:])
+    let _ = RNSMainRegistry.triggerEvent(type: "app.didenterbackground", data: [:])
   }
   
   func applicationWillEnterForeground(_ application: UIApplication) {
-    let _ = RNSMainRegistry.main.triggerEvent("app.willenterforeground", data: [:])
+    let _ = RNSMainRegistry.triggerEvent(type: "app.willenterforeground", data: [:])
   }
   
   func applicationDidBecomeActive(_ application: UIApplication) {
-    let _ = RNSMainRegistry.main.triggerEvent("app.didbecomeactive", data: [:])
+    let _ = RNSMainRegistry.triggerEvent(type: "app.didbecomeactive", data: [:])
   }
   
   func applicationWillTerminate(_ application: UIApplication) {
-    let _ = RNSMainRegistry.main.triggerEvent("app.willterminate", data: [:])
+    let _ = RNSMainRegistry.triggerEvent(type: "app.willterminate", data: [:])
   }
   //MARK:Shortcut Management
   public func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
-    DispatchQueue.main.async() {
-      RNSMainRegistry.main.data["shortcuttriggered"] = shortcutItem.type
-      RNSMainRegistry.main.data["shortcut." + shortcutItem.type] = shortcutItem.userInfo ?? [:]
-      let _ = RNSMainRegistry.main.triggerEvent("shortcut." + shortcutItem.type, data: shortcutItem.userInfo ?? [:])
-      completionHandler(true)
-    }
+      RNSMainRegistry.setData(key: "shortcuttriggered", value: shortcutItem.type)
+      RNSMainRegistry.setData(key: shortcutItem.type, value: shortcutItem.userInfo ?? [:])
+    let ret = RNSMainRegistry.triggerEvent(type: shortcutItem.type, data: shortcutItem.userInfo ?? [:])
+      completionHandler(ret)
   }
   //MARK:URL Management
   public func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-    RNSMainRegistry.main.data["app.url"] = url
-    RNSMainRegistry.main.data["app.urlinfo"] = options
-    return RNSMainRegistry.main.triggerEvent("app.openedurl", data: url);
+    RNSMainRegistry.setData(key: "app.url", value:url)
+    RNSMainRegistry.setData(key: "app.urlinfo", value: options)
+    let ret = RNSMainRegistry.triggerEvent(type: "app.openedurl", data: url)
+    return ret
   }
 }
