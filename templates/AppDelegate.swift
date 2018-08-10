@@ -10,6 +10,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     return rv
   }
+  //MARK: Lifecycle Management
   public func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     cachedLaunchOptions = launchOptions
     guard let jsLocation = RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index", fallbackResource: nil) else {
@@ -68,4 +69,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let ret = RNSMainRegistry.triggerEvent(type: "app.openedurl", data: url)
     return ret
   }
+  //MARK Notification Managemener
+  public func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+    let _ = RNSMainRegistry.triggerEvent(type: "app.didRegisterForRemoteNotifications", data: deviceToken)
+  }
+  public func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
+    let _ = RNSMainRegistry.triggerEvent(type: "app.didRegisterUserNotificationSettings", data: notificationSettings)
+  }
+  public func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
+    let _ = RNSMainRegistry.triggerEvent(type: "app.didReceiveRemoteNotification", data: userInfo)
+  }
+  public func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+    let _ = RNSMainRegistry.triggerEvent(type: "app.didFailToRegisterForRemoteNotifications", data: error)
+  }
+  public func application(_ application: UIApplication, didReceive notification: UILocalNotification) {
+    let _ = RNSMainRegistry.triggerEvent(type: "app.didReceiveLocalNotification", data: notification)
+  }
+
 }
