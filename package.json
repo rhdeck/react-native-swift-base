@@ -1,6 +1,6 @@
 {
   "name": "react-native-swift-base",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Changes AppDelegate to Swift for React-Native apps",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
