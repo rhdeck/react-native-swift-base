@@ -69,7 +69,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let ret = RNSMainRegistry.triggerEvent(type: "app.openedurl", data: url)
     return ret
   }
-  //MARK Notification Management
+  //MARK:Notification Management
   public func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
     let _ = RNSMainRegistry.triggerEvent(type: "app.didRegisterForRemoteNotifications", data: deviceToken)
   }
