@@ -17,6 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       return false;
     }
     RNSMainRegistry.setData(key: "initialBundle", value: jsLocation.absoluteString)
+    RNSMainRegistry.triggerEvent(type: "app.didFinishLaunchingWithOptions.start", data: [:])
     let w = UIWindow(frame: UIScreen.main.bounds)
     let rvc = UIViewController()
     rvc.view = getRootView(jsLocation)
