@@ -17,10 +17,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       return false;
     }
     RNSMainRegistry.setData(key: "initialBundle", value: jsLocation.absoluteString)
-    RNSMainRegistry.triggerEvent(type: "app.didFinishLaunchingWithOptions.start", data: [:])
+    let _ = RNSMainRegistry.triggerEvent(type: "app.didFinishLaunchingWithOptions.start", data: [:])
     let w = UIWindow(frame: UIScreen.main.bounds)
     let rvc = UIViewController()
-    rvc.view = getRootView(jsLocation)
+    if let s = RNSMainRegistry.getData(key: "initialBundle") as? String, let u = URL(string: s) {
+      rvc.view = getRootView(u)
+    } else {
+      rvc.view = getRootView(jsLocation)
+    }
+    rvc.view = getRootView(sURL)
     w.rootViewController = rvc
     w.makeKeyAndVisible()
     self.window = w
@@ -70,7 +75,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let ret = RNSMainRegistry.triggerEvent(type: "app.openedurl", data: url)
     return ret
   }
-  //MARK:Notification Management
+  //MARK: Notification Management
   public func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
     let _ = RNSMainRegistry.triggerEvent(type: "app.didRegisterForRemoteNotifications", data: deviceToken)
   }
@@ -86,5 +91,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   public func application(_ application: UIApplication, didReceive notification: UILocalNotification) {
     let _ = RNSMainRegistry.triggerEvent(type: "app.didReceiveLocalNotification", data: notification)
   }
-
+  //MARK: Background download handling
+  public func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
+    let _ = RNSMainRegistry.triggerEvent(type: "app.handleEventsForBackgroundURLSession", data = ["identifier": identifier, "completionHandler": completionHandler])
+  }
 }
