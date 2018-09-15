@@ -93,6 +93,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
   //MARK: Background download handling
   public func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
-    let _ = RNSMainRegistry.triggerEvent(type: "app.handleEventsForBackgroundURLSession", data = ["identifier": identifier, "completionHandler": completionHandler])
+    let _ = RNSMainRegistry.triggerEvent(type: "app.handleEventsForBackgroundURLSession", data: ["identifier": identifier, "completionHandler": completionHandler])
   }
 }
