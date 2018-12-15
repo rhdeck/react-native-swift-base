@@ -21,7 +21,7 @@
     "inquirer": "^4.0.2",
     "plist": "^2.1.0",
     "rgb-hex": "^2.1.0",
-    "xcode": "rhdeck/cordova-node-xcode"
+    "@raydeck/xcode": "^2.2.0"
   },
   "rnpm": {
     "commands": {
