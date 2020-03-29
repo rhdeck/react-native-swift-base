@@ -23,13 +23,7 @@
     "rgb-hex": "^2.1.0",
     "@raydeck/xcode": "^2.2.0"
   },
-  "rnpm": {
-    "commands": {
-      "prelink": "node node_modules/react-native-swift-base/bin/set-swift-base.js"
-    },
-    "plugin": "./bin/setbgcolor.js"
-  },
   "peerDependencies": {
-    "react-native-swift-registry": "rhdeck/react-native-swift-registry"
+    "react-native-swift-registry": "*"
   }
 }
