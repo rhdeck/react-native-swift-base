@@ -1,5 +1,5 @@
 import UIKit
-import RNSRegistry
+import ReactNativeSwiftRegistry
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
   var ranAtStart = false
