@@ -1,3 +1,7 @@
+# DEPRECATED
+
+This package is no longer loved by me. I moved the core functionality to [@react-native-swift/core](https://github.com/rhdeck/react-native-swift-core), to link it with the broader react-native-swift project
+
 # react-native-swift-base
 
 Re-bases a react native project into a Swift-centric one.
